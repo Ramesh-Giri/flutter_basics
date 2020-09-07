@@ -47,6 +47,7 @@ class _FeedCardItemState extends State<FeedCardItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
         Navigator.push(
             context,
             CupertinoPageRoute(
