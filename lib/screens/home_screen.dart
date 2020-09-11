@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_workshop/models/feed.dart';
+import 'package:flutter_workshop/widgets/post_item.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -17,60 +19,11 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
-        padding: EdgeInsets.only(top: 10.0),
-        children: [
-          Container(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(radius: 20.0, backgroundColor: Colors.red,),
-                          SizedBox(width: 10.0,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Ramesh', style: TextStyle(color: Colors.white),),
-                              Text('Ramesh', style: TextStyle(color: Colors.white, fontSize: 12.0),),
-                            ],
-                          ),
-                        ],
-                      ),
-
-                      IconButton(onPressed: (){}, icon: Icon(Icons.more_vert, color: Colors.white,),),
-                    ],
-                  ),
-                ),
-                Container(
-                  color: Colors.red,
-                  height: 250.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.favorite_border, color: Colors.white,size: 32.0,),
-                        SizedBox(width: 10.0,),
-                        Icon(Icons.insert_comment, color: Colors.white,size: 32.0,),
-                        SizedBox(width: 10.0,),
-                        Icon(Icons.send, color: Colors.white,size: 32.0,),
-                      ],
-                    ),
-                    Icon(Icons.bookmark_border, color: Colors.white,size: 32.0,),
-                  ],
-                ),
-                Text(''),
-                Text(''),
-              ],
-            ),
-          )
-        ],
+      body: ListView.builder(
+        itemCount: getFeeds().length,   // 2
+        itemBuilder: (context, index){
+          return PostItem(feed: getFeeds()[index]);
+        },
       ),
     );
   }
