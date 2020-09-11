@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_workshop/models/feed.dart';
 import 'package:flutter_workshop/widgets/feed_card_item.dart';
 
+import 'add_post_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -31,11 +33,35 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
-          itemCount: getFeeds().length,
-          itemBuilder: (context, index) {
-            return FeedCardItem(feed: getFeeds()[index],);
-          }),
+      body: Stack(
+        children: [
+          ListView.builder(
+              itemCount: getFeeds().length,
+              itemBuilder: (context, index) {
+                return FeedCardItem(feed: getFeeds()[index],);
+              }),
+
+          Positioned(
+            bottom: 10.0,
+            left: 50.0,
+            right: 50.0,
+            child: RaisedButton(
+              elevation: 10.0,
+              padding: EdgeInsets.all(20.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40.0)
+              ),
+              color: Colors.red,
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return AddPostScreen();
+                }));
+              },
+              child: Text("Post",style: TextStyle(color: Colors.white),),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

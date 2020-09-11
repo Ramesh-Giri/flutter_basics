@@ -23,7 +23,9 @@ class Feed {
       this.sponsored,
       this.postDate,
       this.description});
+
 }
+
 
 List<Feed> getFeeds() {
   return [

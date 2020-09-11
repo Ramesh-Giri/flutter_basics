@@ -191,6 +191,8 @@ class _FeedCardItemState extends State<FeedCardItem> {
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.w300)),
               ])),
+
+
           SizedBox(
             height: 5.0,
           ),
