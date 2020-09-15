@@ -18,8 +18,8 @@ class _FeedCardItemState extends State<FeedCardItem> {
   @override
   void initState() {
     super.initState();
-    like = widget.feed.like;
-    save = widget.feed.save;
+    like = widget.feed.like;  //false
+    save = widget.feed.save;  //false;
     sendButton = false;
   }
 
@@ -54,7 +54,7 @@ class _FeedCardItemState extends State<FeedCardItem> {
                 builder: (BuildContext context) => FeedDetailScreen(feed: widget.feed)));
       },
       child: Container(
-        margin: EdgeInsets.only(bottom: 20.0),
+        margin: const EdgeInsets.only(bottom: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -138,6 +138,7 @@ class _FeedCardItemState extends State<FeedCardItem> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+
           Row(
             children: [
               tapIcon(like ? Icons.favorite : Icons.favorite_border, toggleLike,
@@ -145,7 +146,10 @@ class _FeedCardItemState extends State<FeedCardItem> {
               SizedBox(
                 width: 15.0,
               ),
+
               tapIcon(Icons.comment, () {}, Colors.white),
+
+
               SizedBox(
                 width: 18.0,
               ),
@@ -159,7 +163,7 @@ class _FeedCardItemState extends State<FeedCardItem> {
     );
   }
 
-  Widget tapIcon(IconData iconData, Function onTap, iconColor) {
+  Widget tapIcon(IconData iconData, var onTap, iconColor) {
     return InkWell(
       onTap: onTap,
       child: Icon(
@@ -203,7 +207,7 @@ class _FeedCardItemState extends State<FeedCardItem> {
 
   _buildCommentSection() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
