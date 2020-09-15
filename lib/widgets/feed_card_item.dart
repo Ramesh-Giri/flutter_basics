@@ -88,7 +88,7 @@ class _FeedCardItemState extends State<FeedCardItem> {
             children: [
               CircleAvatar(
                 radius: 15.0,
-                backgroundImage: NetworkImage(widget.feed.uploaderImageUrl),
+                backgroundImage: NetworkImage(widget.feed.uploaderImageUrl ?? ''),
               ),
               SizedBox(
                 width: 12.0,
@@ -126,7 +126,7 @@ class _FeedCardItemState extends State<FeedCardItem> {
     return InkWell(
         onDoubleTap: toggleLike,
         child: Image.network(
-          widget.feed.imageUrl,
+          widget.feed.imageUrl ?? '',
           height: 280.0,
           fit: BoxFit.cover,
         ));
@@ -196,12 +196,13 @@ class _FeedCardItemState extends State<FeedCardItem> {
           SizedBox(
             height: 5.0,
           ),
-          widget.feed.commentsCount > 0
-              ? Text(
+
+          if(widget.feed.commentsCount > 0)
+              Text(
                   'View all ${widget.feed.commentsCount} comments',
                   style: TextStyle(color: Colors.white.withOpacity(0.5)),
                 )
-              : SizedBox(),
+
         ],
       ),
     );
@@ -217,7 +218,7 @@ class _FeedCardItemState extends State<FeedCardItem> {
             children: [
               CircleAvatar(
                 radius: 12.0,
-                backgroundImage: NetworkImage(widget.feed.uploaderImageUrl),
+                backgroundImage: NetworkImage(widget.feed.uploaderImageUrl ?? ''),
               ),
               SizedBox(
                 width: 12.0,

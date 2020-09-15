@@ -10,8 +10,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  var itemList;
+  @override
+  void initState() {
+    super.initState();
+    itemList = getFeeds();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white.withOpacity(0.1),
@@ -36,9 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: [
           ListView.builder(
-              itemCount: getFeeds().length,
+            padding: EdgeInsets.only(bottom: 50.0),
+              itemCount: itemList.length,
               itemBuilder: (context, index) {
-                return FeedCardItem(feed: getFeeds()[index],);
+                return FeedCardItem(feed: itemList[index],);
               }),
 
           Positioned(
@@ -52,10 +62,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(40.0)
               ),
               color: Colors.red,
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context){
+              onPressed: () async{
+
+                var feedItem = await Navigator.push(context, MaterialPageRoute(builder: (xcontext){
                   return AddPostScreen();
                 }));
+
+                print('FEED ITEM =========== ${feedItem.uploadedBy}');
+                setState(() {
+                  itemList.add(feedItem);
+                });
               },
               child: Text("Post",style: TextStyle(color: Colors.white),),
             ),

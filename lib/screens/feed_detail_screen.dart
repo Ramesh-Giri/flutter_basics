@@ -45,7 +45,7 @@ class FeedDetailScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        feed.postDate,
+                        feed.postDate ?? '',
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,

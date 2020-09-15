@@ -9,10 +9,7 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   Feed feed;
 
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _imageController = TextEditingController();
-  TextEditingController _captionController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+  GlobalKey<FormState> _formKey = GlobalKey();
 
   @override
   void initState() {
@@ -29,91 +26,118 @@ class _AddPostScreenState extends State<AddPostScreen> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Name',
-              style: TextStyle(color: Colors.white),
-            ),
-            TextField(
-              controller: _nameController,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: "Name here",
-                hintStyle: TextStyle(color: Colors.grey),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Name',
+                style: TextStyle(color: Colors.white),
               ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              'Image Url',
-              style: TextStyle(color: Colors.white),
-            ),
-            TextField(
-              controller: _imageController,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: "Add Image Url",
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              'Caption',
-              style: TextStyle(color: Colors.white),
-            ),
-            TextField(
-              controller: _captionController,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: "Caption",
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              'Description',
-              style: TextStyle(color: Colors.white),
-            ),
-            TextField(
-              controller: _descriptionController,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: "Description here",
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Center(
-              child: RaisedButton(
-                onPressed: () {
-                  feed.uploadedBy = _nameController.text.toString();
-                  feed.imageUrl = _imageController.text.toString();
-                  feed.caption = _captionController.text.toString();
-                  feed.description = _descriptionController.text.toString();
-
-                  setState(() {
-                    getFeeds().add(feed);
-                  });
-
-                  Navigator.pop(context);
+              TextFormField(
+                onSaved: (name) => feed.uploadedBy = name,
+                validator: (value){
+                  if(value.isEmpty){
+                    return 'This field cannot be empty';
+                  }else{
+                    return null;
+                  }
                 },
-                color: Colors.green,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: "Name here",
+                  hintStyle: TextStyle(color: Colors.grey),
                 ),
-                child: Text('Save'),
               ),
-            )
-          ],
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                'Image Url',
+                style: TextStyle(color: Colors.white),
+              ),
+              TextFormField(
+                onSaved: (value) => feed.imageUrl = value,
+                validator: (value){
+                  if(value.isEmpty){
+                    return 'This field cannot be empty';
+                  }else{
+                    return null;
+                  }
+                },
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: "Add Image Url",
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                'Caption',
+                style: TextStyle(color: Colors.white),
+              ),
+              TextFormField(
+                onSaved: (value) => feed.caption = value,
+                validator: (value){
+                  if(value.isEmpty){
+                    return 'This field cannot be empty';
+                  }else{
+                    return null;
+                  }
+                },
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: "Caption",
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                'Description',
+                style: TextStyle(color: Colors.white),
+              ),
+              TextFormField(
+                onSaved: (value) => feed.description = value,
+                validator: (value){
+                  if(value.isEmpty){
+                    return 'This field cannot be empty';
+                  }else{
+                    return null;
+                  }
+                },
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: "Description here",
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Center(
+                child: RaisedButton(
+                  onPressed: () {
+
+                    if(_formKey.currentState.validate()){
+                      _formKey.currentState.save();
+                      Navigator.pop(context, feed);
+                    }
+
+                  },
+                  color: Colors.green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: Text('Save'),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

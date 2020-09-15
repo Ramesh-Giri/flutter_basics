@@ -15,12 +15,12 @@ class Feed {
       {this.imageUrl,
       this.caption,
       this.uploadedBy,
-      this.like,
-      this.commentsCount,
+      this.like = false,
+      this.commentsCount = 3,
       this.uploaderImageUrl,
       this.timeAgo,
-      this.save,
-      this.sponsored,
+      this.save = false,
+      this.sponsored = false,
       this.postDate,
       this.description});
 
