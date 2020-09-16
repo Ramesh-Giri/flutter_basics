@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_workshop/screens/home_screen.dart';
+import 'package:flutter_workshop/services/auth_service.dart';
+import 'package:flutter_workshop/widgets/login_form.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -16,7 +18,7 @@ class LoginScreen extends StatelessWidget {
               bottom: 16.0,
               left: 16.0,
               right: 16.0,
-              child: bottomSection(),
+              child: bottomSection(context),
             ),
           ],
         ),
@@ -24,7 +26,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget topSection(context){
+  Widget topSection(context) {
     return Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -37,10 +39,16 @@ class LoginScreen extends StatelessWidget {
           children: [
             Expanded(
               child: InkWell(
-                onTap: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      child: LoginForm(),
+                    ),
+                  );
+                  /* Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                     return HomeScreen();
-                  }));
+                  })); */
                 },
                 child: Container(
                   height: 50.0,
@@ -83,26 +91,26 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget bottomSection(){
+  Widget bottomSection(BuildContext context) {
     return Column(
       children: [
         Text(
           'Or via social media',
-          style: TextStyle(
-              color: Colors.grey.withOpacity(0.8), fontSize: 18.0),
+          style: TextStyle(color: Colors.grey.withOpacity(0.8), fontSize: 18.0),
         ),
-
-        SizedBox(height: 10.0,),
+        SizedBox(
+          height: 10.0,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             InkWell(
-              onTap:(){},
+              onTap: () {},
               child: Container(
                 height: 32.0,
                 width: 32.0,
-                decoration: BoxDecoration(
-                    color: Colors.white, shape: BoxShape.circle),
+                decoration:
+                    BoxDecoration(color: Colors.white, shape: BoxShape.circle),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SvgPicture.asset('assets/facebook.svg'),
@@ -113,12 +121,24 @@ class LoginScreen extends StatelessWidget {
               width: 10.0,
             ),
             InkWell(
-              onTap: (){},
+              onTap: () async {
+                final user = await AuthService.signInWithGoogle();
+                if (user != null) {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
+                    return HomeScreen(
+                      user: user,
+                    );
+                  }));
+                } else {
+                  print("error logging in");
+                }
+              },
               child: Container(
                 height: 32.0,
                 width: 32.0,
-                decoration: BoxDecoration(
-                    color: Colors.white, shape: BoxShape.circle),
+                decoration:
+                    BoxDecoration(color: Colors.white, shape: BoxShape.circle),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SvgPicture.asset('assets/google.svg'),

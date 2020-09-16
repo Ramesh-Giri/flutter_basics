@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_workshop/models/feed.dart';
 import 'package:flutter_workshop/widgets/feed_card_item.dart';
@@ -5,12 +6,14 @@ import 'package:flutter_workshop/widgets/feed_card_item.dart';
 import 'add_post_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  final User user;
+
+  const HomeScreen({Key key, this.user}) : super(key: key);
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   var itemList;
   @override
   void initState() {
@@ -20,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white.withOpacity(0.1),
@@ -44,13 +46,24 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Stack(
         children: [
+          if(widget.user != null)
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              color: Colors.white,
+              padding: const EdgeInsets.all(8.0),
+              height: 50,
+              child: Text(widget.user.email),
+            ),
+          ),
           ListView.builder(
-            padding: EdgeInsets.only(bottom: 50.0),
+              padding: EdgeInsets.only(bottom: 50.0),
               itemCount: itemList.length,
               itemBuilder: (context, index) {
-                return FeedCardItem(feed: itemList[index],);
+                return FeedCardItem(
+                  feed: itemList[index],
+                );
               }),
-
           Positioned(
             bottom: 10.0,
             left: 50.0,
@@ -59,12 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
               elevation: 10.0,
               padding: EdgeInsets.all(20.0),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(40.0)
-              ),
+                  borderRadius: BorderRadius.circular(40.0)),
               color: Colors.red,
-              onPressed: () async{
-
-                var feedItem = await Navigator.push(context, MaterialPageRoute(builder: (xcontext){
+              onPressed: () async {
+                var feedItem = await Navigator.push(context,
+                    MaterialPageRoute(builder: (xcontext) {
                   return AddPostScreen();
                 }));
 
@@ -73,7 +85,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemList.add(feedItem);
                 });
               },
-              child: Text("Post",style: TextStyle(color: Colors.white),),
+              child: Text(
+                "Post",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ],
