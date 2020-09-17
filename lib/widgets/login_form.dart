@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_workshop/screens/home_screen.dart';
 import 'package:flutter_workshop/services/auth_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_workshop/state/auth_state.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -34,12 +36,13 @@ class _LoginFormState extends State<LoginForm> {
             final pass = _password.text;
             print("email: $email, password: $pass");
             final user =
-                await AuthService.signUpWithEmail(email: email, password: pass);
+                await AuthService.loginWithEmail(email: email, password: pass);
             if (user != null) {
-              Navigator.pushReplacement(context,
+              /* Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) {
-                return HomeScreen(user: user,);
-              }));
+                return HomeScreen();
+              })); */
+              Navigator.pop(context);
             } else {
               print("error logging in");
             }

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_workshop/screens/home_screen.dart';
 import 'package:flutter_workshop/services/auth_service.dart';
+import 'package:flutter_workshop/state/auth_state.dart';
 import 'package:flutter_workshop/widgets/login_form.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -124,12 +126,10 @@ class LoginScreen extends StatelessWidget {
               onTap: () async {
                 final user = await AuthService.signInWithGoogle();
                 if (user != null) {
-                  Navigator.pushReplacement(context,
+                  /* Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) {
-                    return HomeScreen(
-                      user: user,
-                    );
-                  }));
+                    return HomeScreen();
+                  })); */
                 } else {
                   print("error logging in");
                 }

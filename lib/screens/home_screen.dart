@@ -1,14 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_workshop/models/feed.dart';
+import 'package:flutter_workshop/services/auth_service.dart';
+import 'package:flutter_workshop/state/auth_state.dart';
 import 'package:flutter_workshop/widgets/feed_card_item.dart';
 
 import 'add_post_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final User user;
-
-  const HomeScreen({Key key, this.user}) : super(key: key);
+  const HomeScreen({Key key}) : super(key: key);
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -23,76 +24,89 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white.withOpacity(0.1),
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Icon(
-              Icons.camera_enhance,
-              size: 32.0,
+    return Consumer(
+      builder: (context, watch, child) {
+        final user = watch(userProvider).state;
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white.withOpacity(0.1),
+            automaticallyImplyLeading: false,
+            title: Row(
+              children: [
+                Icon(
+                  Icons.camera_enhance,
+                  size: 32.0,
+                ),
+                SizedBox(width: 10.0),
+                Text('Instagram'),
+              ],
             ),
-            SizedBox(width: 10.0),
-            Text('Instagram'),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.send),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          if(widget.user != null)
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.all(8.0),
-              height: 50,
-              child: Text(widget.user.email),
-            ),
-          ),
-          ListView.builder(
-              padding: EdgeInsets.only(bottom: 50.0),
-              itemCount: itemList.length,
-              itemBuilder: (context, index) {
-                return FeedCardItem(
-                  feed: itemList[index],
-                );
-              }),
-          Positioned(
-            bottom: 10.0,
-            left: 50.0,
-            right: 50.0,
-            child: RaisedButton(
-              elevation: 10.0,
-              padding: EdgeInsets.all(20.0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40.0)),
-              color: Colors.red,
-              onPressed: () async {
-                var feedItem = await Navigator.push(context,
-                    MaterialPageRoute(builder: (xcontext) {
-                  return AddPostScreen();
-                }));
-
-                print('FEED ITEM =========== ${feedItem.uploadedBy}');
-                setState(() {
-                  itemList.add(feedItem);
-                });
-              },
-              child: Text(
-                "Post",
-                style: TextStyle(color: Colors.white),
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.send),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.exit_to_app),
+                onPressed: () async {
+                  print("logging out");
+                  await AuthService.logOut();
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+          body: Stack(
+            children: [
+              if (user != null)
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    color: Colors.white,
+                    height: 80,
+                    child: ListTile(
+                      title: Text(user.email),
+                    ),
+                  ),
+                ),
+              ListView.builder(
+                  padding: EdgeInsets.only(bottom: 50.0),
+                  itemCount: itemList.length,
+                  itemBuilder: (context, index) {
+                    return FeedCardItem(
+                      feed: itemList[index],
+                    );
+                  }),
+              Positioned(
+                bottom: 10.0,
+                left: 50.0,
+                right: 50.0,
+                child: RaisedButton(
+                  elevation: 10.0,
+                  padding: EdgeInsets.all(20.0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40.0)),
+                  color: Colors.red,
+                  onPressed: () async {
+                    var feedItem = await Navigator.push(context,
+                        MaterialPageRoute(builder: (xcontext) {
+                      return AddPostScreen();
+                    }));
+
+                    print('FEED ITEM =========== ${feedItem.uploadedBy}');
+                    setState(() {
+                      itemList.add(feedItem);
+                    });
+                  },
+                  child: Text(
+                    "Post",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
