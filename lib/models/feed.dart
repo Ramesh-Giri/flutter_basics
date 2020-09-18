@@ -8,8 +8,9 @@ class Feed {
   String timeAgo;
   bool save;
   bool sponsored;
-  String postDate;
+  int postDate;
   String description;
+  String uid;
 
   Feed(
       {this.imageUrl,
@@ -41,7 +42,7 @@ List<Feed> getFeeds() {
       timeAgo: '2 minutes ago',
       save: false,
       sponsored: true,
-      postDate: "Sept 5, 2020",
+      postDate: DateTime.now().millisecondsSinceEpoch,
       description:
           'Having a plant at your work desk can be really helpful. I don\'t know why though',
     ),
@@ -57,7 +58,7 @@ List<Feed> getFeeds() {
         timeAgo: '2 minutes ago',
         save: false,
         sponsored: false,
-        postDate: "Sep 2, 2020",
+        postDate: DateTime.now().millisecondsSinceEpoch,
         description:
             'You should eat your breakfast before 30 minutes, after you wake up.'),
     Feed(
@@ -72,7 +73,7 @@ List<Feed> getFeeds() {
       timeAgo: '2 minutes ago',
       save: false,
       sponsored: true,
-      postDate: "Aug 5, 2020",
+      postDate: DateTime.now().millisecondsSinceEpoch,
       description:
       'Having a plant at your work desk can be really helpful. I don\'t know why though',
     ),
@@ -88,7 +89,7 @@ List<Feed> getFeeds() {
       timeAgo: '2 minutes ago',
       save: false,
       sponsored: true,
-        postDate: "July 2, 2020",
+        postDate: DateTime.now().millisecondsSinceEpoch,
         description: 'Y0u should eat your breakfast before 30 minutes, after you wake up.'
     ),
   ];
