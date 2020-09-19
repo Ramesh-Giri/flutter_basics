@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Feed {
   String imageUrl;
   String caption;
@@ -11,6 +13,7 @@ class Feed {
   int postDate;
   String description;
   String uid;
+  String docId;
 
   Feed(
       {this.imageUrl,
@@ -24,6 +27,18 @@ class Feed {
       this.sponsored = false,
       this.postDate,
       this.description});
+
+  Feed.fromJson(QueryDocumentSnapshot querySnapshot){
+    var data = querySnapshot.data();
+    this.caption = data['caption'];
+    this.description = data["description"];
+    this.uploadedBy = data['uploadedBy'];
+    this.postDate = data['postDate'];
+    this.imageUrl = data['imageUrl'];
+    this.like = data['like'] ?? false;
+    this.save = data['save'] ?? false;
+    this.docId = querySnapshot.id;
+  }
 
 }
 

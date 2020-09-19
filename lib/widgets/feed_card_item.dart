@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_workshop/models/feed.dart';
 import 'package:flutter_workshop/screens/feed_detail_screen.dart';
+import 'package:flutter_workshop/services/post_service.dart';
 
 class FeedCardItem extends StatefulWidget {
   final Feed feed;
@@ -13,21 +14,17 @@ class FeedCardItem extends StatefulWidget {
 }
 
 class _FeedCardItemState extends State<FeedCardItem> {
-  bool like, save, sendButton;
+  bool save, sendButton;
 
   @override
   void initState() {
     super.initState();
-    like = widget.feed.like;  //false
     save = widget.feed.save;  //false;
     sendButton = false;
   }
 
   toggleLike() {
-    setState(() {
-      like = !like;
-    });
-    widget.feed.like = like;
+    PostService.updateLike(widget.feed.docId, !widget.feed.like);
   }
 
   toggleSave() {
@@ -56,7 +53,7 @@ class _FeedCardItemState extends State<FeedCardItem> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildTopPart(),
             _buildImagePart(),
@@ -97,10 +94,10 @@ class _FeedCardItemState extends State<FeedCardItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.feed.uploadedBy,
+                    widget.feed.uploadedBy??'',
                     style: TextStyle(color: Colors.white),
                   ),
-                  widget.feed.sponsored
+                  widget.feed.sponsored??false
                       ? Text(
                           "Sponsored",
                           style: TextStyle(color: Colors.white, fontSize: 10.0),
@@ -141,8 +138,8 @@ class _FeedCardItemState extends State<FeedCardItem> {
 
           Row(
             children: [
-              tapIcon(like ? Icons.favorite : Icons.favorite_border, toggleLike,
-                  like ? Colors.red : Colors.white),
+              tapIcon(widget.feed.like ? Icons.favorite : Icons.favorite_border, toggleLike,
+                  widget.feed.like ? Colors.red : Colors.white),
               SizedBox(
                 width: 15.0,
               ),
@@ -197,7 +194,7 @@ class _FeedCardItemState extends State<FeedCardItem> {
             height: 5.0,
           ),
 
-          if(widget.feed.commentsCount > 0)
+          if(widget.feed.commentsCount??0 > 0)
               Text(
                   'View all ${widget.feed.commentsCount} comments',
                   style: TextStyle(color: Colors.white.withOpacity(0.5)),
